@@ -1,0 +1,73 @@
+{% load static %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+        <meta name="generator" content="Hugo 0.112.5">
+        {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> {% endcomment %}
+        {% comment %} <link rel="stylesheet" href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css"> {% endcomment %}
+        <link rel='stylesheet' id='roboto-subset.css-css'  href='https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/mdb5/fonts/roboto-subset.css?ver=3.9.0-update.5' type='text/css' media='all' />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" 
+        rel="stylesheet" 
+        integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" 
+        crossorigin="anonymous">
+        <link rel="icon" type="image/x-icon" href={% static "assets/favicon.ico" %} />
+    </head>
+<body>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+        <div class="row d-flex align-items-center justify-content-center h-100">
+            <div class="col-md-8 col-lg-7 col-xl-6">
+            <img src="{% static "img/login.png" %}"
+                class="img-fluid" alt="Phone image">
+            </div>
+            <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+                {% if form.errors %}
+                    <p style="color: red">Username and Password do not match</p>
+                {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                <fieldset class="form-outline mb-4">
+                <div class="form-outline mb-4">
+                    <label for="Username" class="visually-hidden form-label">
+                        Username</label>
+                        <input type="text"
+                        name="username"
+                        id="id_username"
+                        maxlength="150"
+                        autocapitalize="none"
+                        autocomplete="username"
+                        class="form-control form-control-lg"
+                        placeholder="User name"
+                        required autofocus>
+                </div>
+                </fieldset>
+    
+                <fieldset class="form-outline mb-4">
+                <div class="form-outline mb-4">
+                    <label for="Password" class="visually-hidden form-label">
+                        Password</label>
+                    <input type="password"
+                        name="password"
+                        id="id_password"
+                        autocomplete="current-password"
+                        class="form-control form-control-lg"
+                        placeholder="Password"
+                    required autofocus>
+                </div>
+                </fieldset>
+                <div class="d-flex justify-content-around align-items-center mb-4">
+                    <a href="{% url "password_reset" %}">Forgot password?</a>
+                </div>
+    
+            <button type="submit" class="btn btn-primary btn-lg" style="width:450">Log in</button>
+            <input type="hidden"
+                name="next"
+                value="{% url "pokebook:index" %}">
+            </form>
+            </div>
+        </div>
+        </div>
+    </section>

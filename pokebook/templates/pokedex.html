@@ -1,0 +1,168 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Pokedex{% endblock %}
+
+{% block contents %}
+<style>
+  .navbar-nav a[href="{% url 'pokebook:index' %}"] {
+    color:blue;
+  }
+
+  .navbar-nav a[href="{% url 'pokebook:pokedex' %}"] {
+    color: white;
+  }
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-gap: 20px; 
+    }
+  
+    .card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+  
+    .card img {
+      width: 100%;
+      height: auto;
+    }
+    .card-body {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-text {
+      display: flex;
+      align-items: center;
+      margin-bottom: 7.5px;
+    }
+    .btn-group {
+      display:flex;
+      justify-content: space-between;
+      align-items:flex-end;
+    }
+</style>
+<br><br><br><br>
+  <div class="container mt-4">
+    <h2 class="mb-4 text-center">図鑑！！</h2>
+    <hr>
+    <form method="get" action ="{% url "pokebook:pokedex" %}" id="searchForm">
+      {% csrf_token %}
+      <label for="age">世代：</label>
+      <select name="age" id="age" onchange="submitForm()">
+        <option value="all" {% if request.GET.age == 'all' %}selected{% endif %}>ALL</option>
+        <option value="赤・緑"{% if request.GET.age == '赤・緑' %}selected{% endif %}>赤・緑</option>
+        <option value="金・銀"{% if request.GET.age == '金・銀' %}selected{% endif %}>金・銀</option>
+        <option value="ルビー・サファイア・エメラルド"{% if request.GET.age == 'ルビー・サファイア・エメラルド' %}selected{% endif %}>ルビー・サファイア・エメラルド</option>
+        <option value="ダイヤモンド・パール・プラチナ"{% if request.GET.age == 'ダイヤモンド・パール・プラチナ' %}selected{% endif %}>ダイヤモンド・パール・プラチナ</option>
+        <option value="ブラック・ホワイト" {% if request.GET.age == 'ブラック・ホワイト' %}selected{% endif %}>ブラック・ホワイト</option>
+        <option value="X・Y"{% if request.GET.age == 'X・Y' %}selected{% endif %}>X・Y</option>
+        <option value="サン・ムーン"{% if request.GET.age == 'サン・ムーン' %}selected{% endif %}>サン・ムーン</option>
+        <option value="ソード・シールド・Legendsアルセウス"{% if request.GET.age == 'ソード・シールド・Legendsアルセウス' %}selected{% endif %}>ソード・シールド・Legendsアルセウス</option>
+        <option value="スカーレット・バイオレット"{% if request.GET.age == 'スカーレット・バイオレット' %}selected{% endif %}>スカーレット・バイオレット</option>
+      </select>
+      <label for="type">タイプ：</label>
+      <select name="type" id="type" onchange="submitForm()">
+        <option value="">すべてタイプ</option>
+        <option value="ノーマル" {% if request.GET.type == 'ノーマル' %}selected{% endif %}>ノーマル</option>
+        <option value="ほのお" {% if request.GET.type == 'ほのお' %}selected{% endif %}>ほのお</option>
+        <option value="みず" {% if request.GET.type == 'みず' %}selected{% endif %}>みず</option>
+        <option value="くさ" {% if request.GET.type == 'くさ' %}selected{% endif %}>くさ</option>
+        <option value="でんき" {% if request.GET.type == 'でんき' %}selected{% endif %}>でんき</option>
+        <option value="こおり" {% if request.GET.type == 'こおり' %}selected{% endif %}>こおり</option>
+        <option value="かくとう" {% if request.GET.type == 'かくとう' %}selected{% endif %}>かくとう</option>
+        <option value="どく" {% if request.GET.type == 'どく' %}selected{% endif %}>どく</option>
+        <option value="じめん" {% if request.GET.type == 'じめん' %}selected{% endif %}>じめん</option>
+        <option value="ひこう" {% if request.GET.type == 'ひこう' %}selected{% endif %}>ひこう</option>
+        <option value="エスパー" {% if request.GET.type == 'エスパー' %}selected{% endif %}>エスパー</option>
+        <option value="むし" {% if request.GET.type == 'むし' %}selected{% endif %}>むし</option>
+        <option value="いわ" {% if request.GET.type == 'いわ' %}selected{% endif %}>いわ</option>
+        <option value="ゴースト" {% if request.GET.type == 'ゴースト' %}selected{% endif %}>ゴースト</option>
+        <option value="ドラゴン"{% if request.GET.type == 'ドラゴン' %}selected{% endif %}>ドラゴン</option>
+        <option value="あく" {% if request.GET.type == 'あく' %}selected{% endif %}>あく</option>
+        <option value="はがね" {% if request.GET.type == 'はがね' %}selected{% endif %}>はがね</option>
+        <option value="フェアリー" {% if request.GET.type == 'フェアリー' %}selected{% endif %}>フェアリー</option>
+      </select>
+      <label for ="order_by" >表示順：</label>
+      <select name="order_by" id="order_by" onchange="submitForm()">
+        <option value="num" {% if request.GET.order_by == 'num' %}selected{% endif %}>番号順</option>
+        <option value="-posted_at" {% if request.GET.order_by == '-posted_at' %}selected{% endif %}>登録順</option>
+      </select>
+      <label for="sort_order">ソート順：</label>
+      <select name="sort_order" id="sort_order" onchange="submitForm()">
+          <option value="昇順" {% if request.GET.sort_order == '昇順' %}selected{% endif %}>昇順</option>
+          <option value="降順" {% if request.GET.sort_order == '降順' %}selected{% endif %}>降順</option>
+      </select>
+      <label for ="name">ポケモン名：</label>
+      <input type="text" name="name" id="name" value="{{ request.GET.name }}">  
+      <input type="submit" value="検索">
+    </form>
+    <div class="album py-5 bg-light">
+      <div class="container">
+        <div class="card-container">
+          {% for pokemon in pokemon_list %}
+          <div class="col">
+            <div class="card shadow-sm">     
+              <a href="{% url "pokebook:pokedetail" pk=pokemon.pk %}">
+                <img src ="{{ pokemon.image.url }}"
+                     class= "bd-placeholder-img card-img-top"
+                     width="100%" height="300"
+                     alt="Pokmon Image">
+                </a>
+                <div class="card-body">
+                  <p class="card-text" style="margin-top:auto; font-size:18px;color:blue;">
+                    {{ pokemon.name }}
+                  </p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group" style="position:relative;">
+                      <button type="button"
+                                   class="btn btn-sm btn-outline-secondary"
+                                   onclick="filterByType('{{pokemon.type1}}')"> 
+                                  {{ pokemon.type1 }}</button>
+                      {% if pokemon.type2 %}
+                      <button type="button"
+                      class="btn btn-sm btn-outline-secondary"
+                      onclick="filterByType('{{pokemon.type2}}')"> 
+                     {{ pokemon.type2 }}</button>
+                        {% endif %}
+                    </div>
+                    <button type="button"
+                    class="btn btn-sm btn-outline-secondary"
+                    onclick="location.href='{% url "pokebook:pokedetail" pokemon.pk %}'"
+                    style=""> 
+                    図鑑説明</button>
+                  </div>
+                </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="pagination mt-4">
+      <span class="step-links" style="display: inline-block; margin: 0 auto; !important;">
+
+        {% if pokemon_list.has_previous %}
+        <a href="?page=1{% if pagination_params %}&{{ pagination_params }}{% endif %}">&laquo; first</a>
+        <a href="?page={{ pokemon_list.previous_page_number }}{% if pagination_params %}&{{ pagination_params }}{% endif %}">previous</a>
+      {% endif %}
+      <span class="current" style="">
+        Page {{ pokemon_list.number }} of {{ pokemon_list.paginator.num_pages }}.
+      </span>
+      {% if pokemon_list.has_next %}
+        <a href="?page={{ pokemon_list.next_page_number }}{% if pagination_params %}&{{ pagination_params }}{% endif %}">next</a>
+        <a href="?page={{ pokemon_list.paginator.num_pages }}{% if pagination_params %}&{{ pagination_params }}{% endif %}">last &raquo;</a>
+      {% endif %}
+      </span>
+    </div>
+  </div>
+  <br>
+  <script>
+    function submitForm() {
+      document.getElementById("searchForm").submit();
+    }
+    </script>
+{% endblock %}

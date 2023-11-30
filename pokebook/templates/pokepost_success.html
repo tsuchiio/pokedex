@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{%block title %}登録完了！! {% endblock %}
+{%block contents%}
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="text-align: center;">
+        <img src="{% static "img/thankyou.jpg" %}" alt="">
+        <br>
+        <h1>ポケモン登録完了！！</h1>
+        <br>
+        <h3 id="countdown" style=""></h3>
+    </div>
+</div>
+
+    <script>
+        // カウントダウンとページの移動を行う関数
+        function countdownAndRedirect() {
+          var countdownElement = document.getElementById('countdown');
+          var count = 5;
+    
+          // カウントダウンを表示して、1秒ごとに更新する
+          var countdownInterval = setInterval(function() {
+            countdownElement.innerText = count+"秒後にHOMEに移動します";
+            count--;
+    
+            // カウントが0になったらトップページに移動する
+            if (count < 0) {
+              clearInterval(countdownInterval); // インターバルをクリア
+              countdownElement.style.display = 'none'; // カウントダウンを非表示にする
+    
+              // 移動したいページのURLを指定してください
+              var targetUrl = '{% url "pokebook:index" %}';
+    
+              // 指定のURLに移動する
+              window.location.href = targetUrl;
+            }
+          }, 1000); // 1秒ごとに更新する
+        }
+    
+        // ページが読み込まれたときに関数を呼び出す
+        window.onload = countdownAndRedirect;
+      </script>
+{% endblock %}

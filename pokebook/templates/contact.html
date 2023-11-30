@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title%}FAQs {% endblock %}
+
+{% block  contents%}
+<br><br><br><br>
+    <div class="container">
+        <div class = "row">
+        <div class="col offset-2">
+        <div style="width:80%">
+            <h2 style="text-align:center">Contact Me</h2>
+            <hr>
+        </div>
+        <div style="width:80%;display: inline-block; margin: 0 auto; !important; margin-top:0px">
+                {% if messages %}
+                <ul class = "list-unstyled" style="list-style: none;">
+                    {% for message in massages%}
+                    <li {% if message.tags %} class = "{{message.tags}}" {% endif %}>
+                        {{ message }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <div class="my-5">
+                    <form method = "post" > 
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class = "form-floating">
+                                <div class = "form-group floating-label-group controls">
+                                    {{ field.label_tag }}
+                                    {{ field }}
+                                    <p class = "help-block text-danger"></p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <br>
+                        <button type="submit" class="btn" id="sendMessageButton" style="background-color:Aqua;color:white;width:300px;text-align:center; display: block; margin: 0 auto;"onclick="alert('エンターで送信')">Send</button>
+                    </form>
+                </div>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}

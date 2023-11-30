@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{%block title%}POKE EDIT {% endblock %}
+
+{%block contents%}
+<br><br><br><br>
+<div class="container">
+    <div class = "row">
+        <div class="col offset-2">
+            <form method = "POST"
+                       enctype = "multipart/form-data">
+                    {% csrf_token %}
+                    <table>
+                        <tr>
+                            <th>図鑑ナンバー</th>
+                            <td>{{ form.num }}</td>
+                        </tr>
+                        <tr>
+                            <th>ポケモンの名前</th>
+                            <td>{{ form.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>いつのポケモン？</th>
+                            <td>{{ form.age }}</td>
+                        </tr>
+                        <tr>
+                            <th>ポケモンの画像</th>
+                            <td>{{ form.image }}</td>
+                        </tr>
+                        <tr>
+                            <th>ポケモンの画像2</th>
+                            <td>{{form.image2}}</td>
+                        </tr>
+                        <tr>
+                            <th>画像２について</th>
+                            <td>{{form.image2detail}}</td>
+                        </tr>
+                        <tr>
+                            <th>ポケモンのタイプ1</th>
+                            <td>{{ form.type1 }}</td>
+                        </tr>
+                        <tr>
+                            <th>ポケモンのタイプ2</th>
+                            <td>{{ form.type2 }}</td>
+                        </tr>
+                        <tr>
+                            <th>ポケモンの説明</th>
+                            <td>{{ form.detail }}</td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <div class="text-center">
+                        <button type="submit" class ="btn"style="background-color:limegreen;color:white;">Save Changes</button>
+                    </div>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>
+{% endblock %}

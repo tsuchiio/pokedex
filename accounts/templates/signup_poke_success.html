@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Registration Complate{% endblock  %}
+
+    {% block contents %}
+    <br><br><br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col offset-2">
+                <div class="d-flex align-items-center">
+                    <img src="{% static "img/signupsuccess.jpg" %}" style="max-width:100%;max-height:500px;">
+                    <div class="ms-3">
+                        <h3 style="color:blue">登録が完了しました</h3>
+                        <!-- ログインページのリンクテキスト -->
+                        <p class="text-center"><a href="{% url "accounts:login_poke" %}" style="color:limegreen">ログインはこちら</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endblock  %}

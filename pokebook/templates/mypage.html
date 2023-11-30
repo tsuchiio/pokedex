@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}My Page{% endblock %}
+
+    {% block contents %}
+    <br><br><br><br>
+    {% if user.is_authenticated %}
+        <br>
+        <div style="text-align:center">
+            <h4>{{ user.username }}さんのマイページ</h4>
+            {% if object_list.count == 0 %}
+                <p>{{ user.username }}さんの投稿はありません</p>
+            {% else %}
+                <p>投稿<strong>{{ object_list.count }}</strong>件</p>
+            {% endif %}
+            <a href="{% url "pokebook:pokepost" %}">投稿する</a>
+            <p>     </p>
+            <a href="{% url "password_reset" %}">パスワードのリセット</a>
+        </div>
+        <hr>
+    {% endif %}
+
+    <!-- 投稿一覧テンプレートの組み込み -->
+    {% include "poke_list.html" %}
+
+    {% endblock %}

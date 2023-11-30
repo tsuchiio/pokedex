@@ -1,0 +1,41 @@
+{% load static %}
+<style>
+  .center-content {
+    display: flex;
+    align-items: center;
+  }
+</style>
+<section class="py-5 text-center container">
+    <div class="row py-lg-5">
+      <div class="col-lg-3 col-md-4 order-md-1 order-lg-0">
+        <img src={% static "img/title1.jpg" %} style="max-width:100%;height:auto;">
+      </div>
+      <div class="col-lg-6 col-md-8 mx-auto order-md-0 order-lg-1">
+        <!-- タイトルと本文 -->
+        <br>
+        <h1 class="fw-light">ポケモン図鑑</h1>
+        <p class="lead text-muted">
+          ポケモン図鑑にようこそ！<br>ここではユーザーが投稿したポケモン図鑑が見れます！<br>
+          あなたが見つけたポケモンもぜひ図鑑に追加してください！</p>
+          <p>
+            {% if user.is_authenticated %}
+            <a href="{% url "pokebook:pokepost" %}"
+              class="btn my-2" style="color:white;background-color:Aqua; width:200px">図鑑に登録する</a>
+            <a href="{% url "accounts:logout_poke" %}" 
+              class="btn my-2" style="color:white;background-color:black">ログアウト</a>
+            {% else %}
+            <a href="{% url "accounts:signup_poke" %}" 
+              class="btn my-2" style="color:white;background-color:lightblue; width:200px">今すぐサインアップ</a>
+            <a href="{% url "accounts:login_poke" %}"
+              class="btn my-2" style="color:white;background-color:limegreen">登録済みの方はログイン</a>
+            {% endif %}
+          </p>
+
+      </div>
+      <div class="col-lg-3 col-md-4 order-md-2 order-lg-2">
+        <img src={% static "img/title2.jpg" %} style="max-width:100%;height:auto;">
+      </div>
+    </div>
+    <p style="color:blue;font-size:20px">最近の投稿</p>
+  </section>
+
